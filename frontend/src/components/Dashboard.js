@@ -6,7 +6,7 @@ function Dashboard() {
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:5000/api/accounts/')
+    axios.get('https://account-management-ai-tool.onrender.com/api/accounts/')
       .then(res => {
         setMetrics(res.data.metrics);
         setAccounts(res.data.accounts);

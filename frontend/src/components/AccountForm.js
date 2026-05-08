@@ -18,7 +18,7 @@ function AccountForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://127.0.0.1:5000/api/accounts/', form)
+    axios.post('https://account-management-ai-tool.onrender.com/api/accounts/', form)
       .then(res => {
         setMessage('✅ Account added successfully!');
         setForm({

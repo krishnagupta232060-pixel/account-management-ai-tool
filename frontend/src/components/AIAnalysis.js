@@ -11,7 +11,7 @@ function AIAnalysis() {
 
   const handleAnalyze = () => {
     setLoading(true);
-    axios.post('http://127.0.0.1:5000/api/ai/analyze', { data: accountData })
+    axios.post('https://account-management-ai-tool.onrender.com/api/ai/analyze', { data: accountData })
       .then(res => {
         setAnalysis(res.data.analysis);
         setLoading(false);
@@ -24,7 +24,7 @@ function AIAnalysis() {
 
   const handleRecommend = () => {
     setLoading(true);
-    axios.post('http://127.0.0.1:5000/api/ai/recommend', {
+    axios.post('https://account-management-ai-tool.onrender.com/api/ai/recommend', {
       account_id: accountId,
       issue_type: issueType
     })

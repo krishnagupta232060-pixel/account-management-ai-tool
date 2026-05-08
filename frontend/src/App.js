@@ -1,9 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { auth } from './firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import './App.css';
+import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import AITools from './components/AITools';
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const homeRef = useRef(null);
   const dashboardRef = useRef(null);
   const toolsRef = useRef(null);
@@ -11,9 +17,13 @@ function App() {
   const helpRef = useRef(null);
   const contactRef = useRef(null);
 
-  const scrollTo = (ref) => {
-    ref.current.scrollIntoView({ behavior: 'smooth' });
-  };
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -28,7 +38,25 @@ function App() {
     );
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [user]);
+
+  const scrollTo = (ref) => {
+    ref.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    setUser(null);
+  };
+
+  if (loading) return (
+    <div className="loading-screen">
+      <div className="loading-logo">AMAT AI</div>
+      <div className="loading-bar"></div>
+    </div>
+  );
+
+  if (!user) return <Login onLogin={setUser} />;
 
   return (
     <div className="app">
@@ -41,6 +69,11 @@ function App() {
           <button onClick={() => scrollTo(aboutRef)}>About</button>
           <button onClick={() => scrollTo(helpRef)}>Help</button>
           <button onClick={() => scrollTo(contactRef)}>Contact</button>
+        </div>
+        <div className="nav-user">
+          <img src={user.photoURL} alt="avatar" className="user-avatar" />
+          <span className="user-name">{user.displayName}</span>
+          <button className="logout-btn" onClick={handleLogout}>Logout</button>
         </div>
       </nav>
 
@@ -59,7 +92,7 @@ function App() {
           <p className="section-tag">LIVE TELEMETRY</p>
           <h2>System Dashboard</h2>
         </div>
-        <Dashboard />
+        <Dashboard user={user} />
       </section>
 
       <section ref={toolsRef} className="section dark-section">
@@ -67,17 +100,17 @@ function App() {
           <p className="section-tag">AI INSTRUMENTS</p>
           <h2>Cognitive Tools</h2>
         </div>
-        <AITools />
+        <AITools user={user} />
       </section>
 
       <section ref={aboutRef} className="section">
         <div className="about-content reveal">
           <p className="section-tag">ABOUT</p>
-          <h2>Krishna Gupta</h2>
+          <h2>AMAT AI</h2>
           <p className="about-text">AMAT AI is a precision-engineered account management intelligence platform built to handle enterprise-level client operations, financial analysis, and process optimization using cutting-edge AI.</p>
           <div className="about-stats">
             <div className="stat-item">
-              <h3>3</h3>
+              <h3>6</h3>
               <p>AI Modules</p>
             </div>
             <div className="stat-item">

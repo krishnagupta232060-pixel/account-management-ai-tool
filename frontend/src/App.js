@@ -9,6 +9,7 @@ import AITools from './components/AITools';
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [skipped, setSkipped] = useState(false);
 
   const homeRef = useRef(null);
   const dashboardRef = useRef(null);
@@ -38,7 +39,7 @@ function App() {
     );
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, [user]);
+  }, [user, skipped]);
 
   const scrollTo = (ref) => {
     ref.current.scrollIntoView({ behavior: 'smooth' });
@@ -47,6 +48,7 @@ function App() {
   const handleLogout = async () => {
     await signOut(auth);
     setUser(null);
+    setSkipped(false);
   };
 
   if (loading) return (
@@ -56,7 +58,9 @@ function App() {
     </div>
   );
 
-  if (!user) return <Login onLogin={setUser} />;
+  if (!user && !skipped) return (
+    <Login onLogin={setUser} onSkip={() => setSkipped(true)} />
+  );
 
   return (
     <div className="app">
@@ -71,9 +75,15 @@ function App() {
           <button onClick={() => scrollTo(contactRef)}>Contact</button>
         </div>
         <div className="nav-user">
-          <img src={user.photoURL} alt="avatar" className="user-avatar" />
-          <span className="user-name">{user.displayName}</span>
-          <button className="logout-btn" onClick={handleLogout}>Logout</button>
+          {user ? (
+            <>
+              <img src={user.photoURL} alt="avatar" className="user-avatar" />
+              <span className="user-name">{user.displayName}</span>
+              <button className="logout-btn" onClick={handleLogout}>Logout</button>
+            </>
+          ) : (
+            <button className="logout-btn" onClick={() => setSkipped(false)}>Sign In</button>
+          )}
         </div>
       </nav>
 

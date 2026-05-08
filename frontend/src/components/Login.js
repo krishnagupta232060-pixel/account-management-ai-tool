@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { auth, googleProvider, githubProvider } from '../firebase';
 import { signInWithPopup } from 'firebase/auth';
 
-function Login({ onLogin }) {
+function Login({ onLogin, onSkip }) {
   const [error, setError] = useState('');
 
   const handleGoogle = async () => {
@@ -10,7 +10,7 @@ function Login({ onLogin }) {
       const result = await signInWithPopup(auth, googleProvider);
       onLogin(result.user);
     } catch (err) {
-      setError(err.message);
+      setError('Google sign-in failed. Please try again.');
     }
   };
 
@@ -19,7 +19,7 @@ function Login({ onLogin }) {
       const result = await signInWithPopup(auth, githubProvider);
       onLogin(result.user);
     } catch (err) {
-      setError(err.message);
+      setError('GitHub sign-in failed. Please try again.');
     }
   };
 
@@ -29,7 +29,7 @@ function Login({ onLogin }) {
         <div className="login-logo">AMAT AI</div>
         <p className="login-tag">PRECISION ACCOUNT INTELLIGENCE</p>
         <h2>Welcome Back</h2>
-        <p className="login-sub">Sign in to access your account management dashboard</p>
+        <p className="login-sub">Sign in to save your data and access full features</p>
         {error && <p className="login-error">{error}</p>}
         <button className="login-btn google-btn" onClick={handleGoogle}>
           <span>G</span> Continue with Google
@@ -37,7 +37,10 @@ function Login({ onLogin }) {
         <button className="login-btn github-btn" onClick={handleGithub}>
           <span>⌥</span> Continue with GitHub
         </button>
-        <p className="login-footer">By signing in you agree to AMAT AI terms of service</p>
+        <div className="login-divider">or</div>
+        <button className="login-btn skip-btn" onClick={onSkip}>
+          Continue without signing in →
+        </button>
       </div>
     </div>
   );

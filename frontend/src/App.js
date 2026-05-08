@@ -5,6 +5,7 @@ import './App.css';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import AITools from './components/AITools';
+import ChatBox from './components/ChatBox';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -164,6 +165,8 @@ function App() {
           <a href="mailto:krishnagupta232060@gmail.com" className="contact-email">krishnagupta232060@gmail.com</a>
         </div>
       </section>
+
+      <ChatBox user={user} />
 
       <footer className="footer">
         <p>© 2026 AMAT AI — Krishna Gupta. All rights reserved.</p>

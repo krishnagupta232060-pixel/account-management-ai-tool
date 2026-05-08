@@ -4,7 +4,6 @@ import Dashboard from './components/Dashboard';
 import AITools from './components/AITools';
 
 function App() {
-  cd C:\Users\krish\account-management-ai-tool && git add . && git commit -m "Fix unused variables error" && git push origin main
   const homeRef = useRef(null);
   const dashboardRef = useRef(null);
   const toolsRef = useRef(null);

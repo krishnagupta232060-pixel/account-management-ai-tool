@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import AITools from './components/AITools';
 import ChatBox from './components/ChatBox';
+import ParticlesBg from './components/ParticlesBg';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -96,9 +97,10 @@ function App() {
           <button className="hero-btn" onClick={() => scrollTo(toolsRef)}>Launch AI Tools →</button>
         </div>
         <div className="hero-grid"></div>
+        <ParticlesBg />
       </section>
 
-      <section ref={dashboardRef} className="section">
+      <section ref={dashboardRef} className="section dark-section">
         <div className="section-header reveal">
           <p className="section-tag">LIVE TELEMETRY</p>
           <h2>System Dashboard</h2>
@@ -157,7 +159,7 @@ function App() {
         </div>
       </section>
 
-      <section ref={contactRef} className="section contact-section">
+      <section ref={contactRef} className="contact-section">
         <div className="contact-content reveal">
           <p className="section-tag">CONTACT</p>
           <h2>Get In Touch</h2>

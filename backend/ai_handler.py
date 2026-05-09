@@ -1,16 +1,24 @@
-import google.generativeai as genai
 import os
+import requests
 from dotenv import load_dotenv
 
 load_dotenv()
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel("gemini-1.5-flash")
+GEMINI_API_KEY = os.getenv("GOOGLE_API_KEY")
+GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
+
+def call_gemini(prompt):
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}]
+    }
+    response = requests.post(GEMINI_URL, json=payload)
+    result = response.json()
+    return result["candidates"][0]["content"]["parts"][0]["text"]
 
 def analyze_account(data):
-    prompt = f"""You are an expert account manager. Analyze this account data and provide insights:
+    prompt = f"""You are an expert account manager. Analyze this and provide insights:
 
-Account Data: {data}
+Data: {data}
 
 Provide analysis on:
 1. Revenue Protection strategies
@@ -19,17 +27,13 @@ Provide analysis on:
 4. Process Optimization recommendations
 5. Risk alerts
 
-Be concise and actionable. Format your response with clear sections and bullet points."""
-
-    response = model.generate_content(prompt)
-    return response.text
+Format with clear sections and bullet points."""
+    return call_gemini(prompt)
 
 def get_recommendations(account_id, issue_type):
-    prompt = f"""As an account management AI, provide specific recommendations for:
+    prompt = f"""As an account management AI, provide recommendations for:
 Account ID: {account_id}
 Issue Type: {issue_type}
 
-Give 3-5 specific, actionable recommendations with clear formatting."""
-
-    response = model.generate_content(prompt)
-    return response.text
+Give 3-5 specific actionable recommendations."""
+    return call_gemini(prompt)

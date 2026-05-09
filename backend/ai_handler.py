@@ -1,10 +1,11 @@
-import anthropic
+import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 def analyze_account(data):
     prompt = f"""You are an expert account manager. Analyze this account data and provide insights:
@@ -18,25 +19,17 @@ Provide analysis on:
 4. Process Optimization recommendations
 5. Risk alerts
 
-Be concise and actionable."""
+Be concise and actionable. Format your response with clear sections and bullet points."""
 
-    message = client.messages.create(
-        model="claude-opus-4-5",
-        max_tokens=1024,
-        messages=[{"role": "user", "content": prompt}]
-    )
-    return message.content[0].text
+    response = model.generate_content(prompt)
+    return response.text
 
 def get_recommendations(account_id, issue_type):
     prompt = f"""As an account management AI, provide specific recommendations for:
 Account ID: {account_id}
 Issue Type: {issue_type}
 
-Give 3-5 specific, actionable recommendations."""
+Give 3-5 specific, actionable recommendations with clear formatting."""
 
-    message = client.messages.create(
-        model="claude-opus-4-5",
-        max_tokens=512,
-        messages=[{"role": "user", "content": prompt}]
-    )
-    return message.content[0].text
+    response = model.generate_content(prompt)
+    return response.text

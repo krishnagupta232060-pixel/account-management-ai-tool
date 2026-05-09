@@ -5,14 +5,21 @@ from dotenv import load_dotenv
 load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GOOGLE_API_KEY")
-GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
 
 def call_gemini(prompt):
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
     payload = {
         "contents": [{"parts": [{"text": prompt}]}]
     }
-    response = requests.post(GEMINI_URL, json=payload)
+    response = requests.post(url, json=payload)
     result = response.json()
+    
+    if "error" in result:
+        return f"Gemini Error: {result['error']['message']}"
+    
+    if "candidates" not in result:
+        return f"Unexpected response: {str(result)}"
+    
     return result["candidates"][0]["content"]["parts"][0]["text"]
 
 def analyze_account(data):

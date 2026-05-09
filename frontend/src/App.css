@@ -1296,3 +1296,114 @@ td {
   cursor: not-allowed;
   transform: none;
 }
+/* TOOL CARD HEADER */
+.tool-card-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 0.5px solid rgba(255,255,255,0.08);
+}
+
+.tool-desc {
+  color: rgba(255,255,255,0.45);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  margin-top: 0.5rem;
+}
+
+.tool-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+/* LOGO */
+.nav-logo {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.logo-amat {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: 6px;
+  color: #ffffff;
+}
+
+.logo-ai {
+  font-family: 'Syne', sans-serif;
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 4px;
+  color: rgba(255,255,255,0.4);
+  margin-left: 2px;
+}
+/* CURRENCY SWITCHER */
+.currency-switcher {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+  justify-content: flex-end;
+}
+
+.currency-switcher button {
+  background: rgba(255,255,255,0.05);
+  border: 0.5px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.4);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+}
+
+.currency-switcher button:hover {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.7);
+}
+
+.currency-switcher button.active {
+  background: #ffffff;
+  color: #111111;
+  font-weight: 600;
+  border-color: #ffffff;
+}
+
+/* CHARTS GRID */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.chart-card {
+  background: linear-gradient(135deg, #1a1a1a, #222222);
+  border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.chart-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.chart-card h3 {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.risk-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}

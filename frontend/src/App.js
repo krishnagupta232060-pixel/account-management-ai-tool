@@ -55,7 +55,10 @@ function App() {
 
   if (loading) return (
     <div className="loading-screen">
-      <div className="loading-logo">AMAT AI</div>
+      <div className="nav-logo">
+  <span className="logo-amat">AMAT</span>
+  <span className="logo-ai">AI</span>
+</div>
       <div className="loading-bar"></div>
     </div>
   );

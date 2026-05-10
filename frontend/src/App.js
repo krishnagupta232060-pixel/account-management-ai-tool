@@ -7,11 +7,15 @@ import Dashboard from './components/Dashboard';
 import AITools from './components/AITools';
 import ChatBox from './components/ChatBox';
 import ParticlesBg from './components/ParticlesBg';
+import Settings from './components/Settings';
+import UserProfile from './components/UserProfile';
 
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [skipped, setSkipped] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
   const homeRef = useRef(null);
   const dashboardRef = useRef(null);
@@ -55,10 +59,10 @@ function App() {
 
   if (loading) return (
     <div className="loading-screen">
-      <div className="nav-logo">
-  <span className="logo-amat">AMAT</span>
-  <span className="logo-ai">AI</span>
-</div>
+      <div className="loading-logo">
+        <span className="logo-amat">AMAT</span>
+        <span className="logo-ai">AI</span>
+      </div>
       <div className="loading-bar"></div>
     </div>
   );
@@ -70,7 +74,10 @@ function App() {
   return (
     <div className="app">
       <nav className="navbar">
-        <div className="nav-logo">AMAT AI</div>
+        <div className="nav-logo">
+          <span className="logo-amat">AMAT</span>
+          <span className="logo-ai">AI</span>
+        </div>
         <div className="nav-links">
           <button onClick={() => scrollTo(homeRef)}>Home</button>
           <button onClick={() => scrollTo(dashboardRef)}>Dashboard</button>
@@ -82,12 +89,16 @@ function App() {
         <div className="nav-user">
           {user ? (
             <>
-              <img src={user.photoURL} alt="avatar" className="user-avatar" />
+              <button className="nav-icon-btn" onClick={() => setShowSettings(true)}>⚙</button>
+              <img src={user.photoURL} alt="avatar" className="user-avatar" onClick={() => setShowProfile(true)} style={{cursor:'pointer'}} />
               <span className="user-name">{user.displayName}</span>
               <button className="logout-btn" onClick={handleLogout}>Logout</button>
             </>
           ) : (
-            <button className="logout-btn" onClick={() => setSkipped(false)}>Sign In</button>
+            <>
+              <button className="nav-icon-btn" onClick={() => setShowSettings(true)}>⚙</button>
+              <button className="logout-btn" onClick={() => setSkipped(false)}>Sign In</button>
+            </>
           )}
         </div>
       </nav>
@@ -170,6 +181,9 @@ function App() {
           <a href="mailto:krishnagupta232060@gmail.com" className="contact-email">krishnagupta232060@gmail.com</a>
         </div>
       </section>
+
+      {showSettings && <Settings user={user} onClose={() => setShowSettings(false)} />}
+      {showProfile && <UserProfile user={user} onClose={() => setShowProfile(false)} />}
 
       <ChatBox user={user} />
 

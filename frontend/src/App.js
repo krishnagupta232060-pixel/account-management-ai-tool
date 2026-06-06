@@ -28,6 +28,7 @@ function App() {
   const contactRef = useRef(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
@@ -116,7 +117,7 @@ function App() {
         <div className="hero-orb hero-orb-1"></div>
         <div className="hero-orb hero-orb-2"></div>
         <div className="hero-orb hero-orb-3"></div>
-        <div className="hero-content reveal">
+        <div className="hero-content">
           <p className="hero-tag">PRECISION ACCOUNT INTELLIGENCE</p>
           <h1 className="hero-title">AMAT <span className="gradient-text">AI</span></h1>
           <p className="hero-sub">Enterprise-grade AI instrumentation for client brief translation, automated QBRs, and structural process optimization.</p>

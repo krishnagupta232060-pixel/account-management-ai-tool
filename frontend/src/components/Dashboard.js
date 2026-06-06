@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
@@ -35,7 +35,42 @@ const riskData = [
   { name: 'High Risk', value: 10 },
 ];
 
-const COLORS = ['#44ff88', '#ffaa00', '#ff4444'];
+const COLORS = ['#10B981', '#F59E0B', '#EF4444'];
+
+function AnimatedCounter({ value, suffix = '', prefix = '' }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated.current) {
+          hasAnimated.current = true;
+          const num = parseFloat(String(value).replace(/[^0-9.]/g, '')) || 0;
+          const duration = 1500;
+          const steps = 60;
+          const increment = num / steps;
+          let current = 0;
+          const timer = setInterval(() => {
+            current += increment;
+            if (current >= num) {
+              setCount(num);
+              clearInterval(timer);
+            } else {
+              setCount(Math.floor(current));
+            }
+          }, duration / steps);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [value]);
+
+  return <span ref={ref}>{prefix}{count.toLocaleString()}{suffix}</span>;
+}
 
 function Dashboard({ user }) {
   const [metrics, setMetrics] = useState({});
@@ -60,14 +95,15 @@ function Dashboard({ user }) {
     if (active && payload && payload.length) {
       return (
         <div style={{
-          background: '#1a1a1a',
-          border: '0.5px solid rgba(255,255,255,0.1)',
-          borderRadius: '8px',
+          background: '#111827',
+          border: '1px solid rgba(99,102,241,0.2)',
+          borderRadius: '10px',
           padding: '0.75rem 1rem',
           fontSize: '0.8rem',
-          color: '#ffffff'
+          color: '#ffffff',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
         }}>
-          <p>{label}</p>
+          <p style={{ color: 'rgba(255,255,255,0.5)', marginBottom: '4px' }}>{label}</p>
           <p style={{ color: '#ffffff', fontWeight: 600 }}>
             {payload[0].name === 'revenue'
               ? `${CURRENCIES[currency].symbol}${convert(payload[0].value)}`
@@ -100,15 +136,15 @@ function Dashboard({ user }) {
         </div>
         <div className="metric-card">
           <h3>TOTAL ACCOUNTS</h3>
-          <p>{metrics.total_accounts || 0}</p>
+          <p><AnimatedCounter value={metrics.total_accounts || 0} /></p>
         </div>
         <div className="metric-card">
           <h3>AVG MARGIN</h3>
-          <p>{metrics.average_margin || 0}%</p>
+          <p><AnimatedCounter value={metrics.average_margin || 0} suffix="%" /></p>
         </div>
         <div className="metric-card">
           <h3>AVG SCORE</h3>
-          <p>{metrics.average_customer_score || 0}</p>
+          <p><AnimatedCounter value={metrics.average_customer_score || 0} /></p>
         </div>
       </div>
 
@@ -117,10 +153,16 @@ function Dashboard({ user }) {
           <h3>REVENUE TREND</h3>
           <ResponsiveContainer width="100%" height={180}>
             <LineChart data={revenueData}>
+              <defs>
+                <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#6366F1" />
+                  <stop offset="100%" stopColor="#8B5CF6" />
+                </linearGradient>
+              </defs>
               <XAxis dataKey="month" tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 11 }} axisLine={false} tickLine={false} />
               <YAxis hide />
               <Tooltip content={<CustomTooltip />} />
-              <Line type="monotone" dataKey="revenue" stroke="#ffffff" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="revenue" stroke="url(#lineGrad)" strokeWidth={2.5} dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -132,7 +174,7 @@ function Dashboard({ user }) {
               <XAxis dataKey="month" tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 11 }} axisLine={false} tickLine={false} />
               <YAxis hide />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="margin" fill="rgba(255,255,255,0.15)" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="margin" fill="rgba(99,102,241,0.35)" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -146,7 +188,7 @@ function Dashboard({ user }) {
                   <Cell key={index} fill={COLORS[index]} />
                 ))}
               </Pie>
-              <Tooltip contentStyle={{ background: '#1a1a1a', border: '0.5px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#ffffff', fontSize: '0.8rem' }} />
+              <Tooltip contentStyle={{ background: '#111827', border: '1px solid rgba(99,102,241,0.2)', borderRadius: '10px', color: '#ffffff', fontSize: '0.8rem' }} />
             </PieChart>
           </ResponsiveContainer>
           <div className="risk-legend">

@@ -15,21 +15,21 @@ function ParticlesBg() {
         background: { color: { value: 'transparent' } },
         fpsLimit: 60,
         particles: {
-          color: { value: '#111111' },
+          color: { value: '#6366F1' },
           links: {
-            color: '#111111',
+            color: '#6366F1',
             distance: 150,
             enable: true,
-            opacity: 0.15,
+            opacity: 0.1,
             width: 1,
           },
           move: {
             enable: true,
-            speed: 0.8,
+            speed: 0.6,
           },
-          number: { value: 60 },
-          opacity: { value: 0.2 },
-          size: { value: { min: 1, max: 3 } },
+          number: { value: 40 },
+          opacity: { value: 0.15 },
+          size: { value: { min: 1, max: 2 } },
         },
       }}
       style={{

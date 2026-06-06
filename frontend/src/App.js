@@ -16,6 +16,7 @@ function App() {
   const [skipped, setSkipped] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const homeRef = useRef(null);
   const dashboardRef = useRef(null);
@@ -49,6 +50,7 @@ function App() {
 
   const scrollTo = (ref) => {
     ref.current.scrollIntoView({ behavior: 'smooth' });
+    setMobileMenuOpen(false);
   };
 
   const handleLogout = async () => {
@@ -64,6 +66,7 @@ function App() {
         <span className="logo-ai">AI</span>
       </div>
       <div className="loading-bar"></div>
+      <p className="loading-text">Initializing intelligence systems...</p>
     </div>
   );
 
@@ -78,7 +81,10 @@ function App() {
           <span className="logo-amat">AMAT</span>
           <span className="logo-ai">AI</span>
         </div>
-        <div className="nav-links">
+        <button className={`hamburger ${mobileMenuOpen ? 'open' : ''}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <span></span><span></span><span></span>
+        </button>
+        <div className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
           <button onClick={() => scrollTo(homeRef)}>Home</button>
           <button onClick={() => scrollTo(dashboardRef)}>Dashboard</button>
           <button onClick={() => scrollTo(toolsRef)}>AI Tools</button>
@@ -104,11 +110,17 @@ function App() {
       </nav>
 
       <section ref={homeRef} className="hero-section">
+        <div className="hero-orb hero-orb-1"></div>
+        <div className="hero-orb hero-orb-2"></div>
+        <div className="hero-orb hero-orb-3"></div>
         <div className="hero-content reveal">
           <p className="hero-tag">PRECISION ACCOUNT INTELLIGENCE</p>
-          <h1 className="hero-title">AMAT AI</h1>
+          <h1 className="hero-title">AMAT <span className="gradient-text">AI</span></h1>
           <p className="hero-sub">Enterprise-grade AI instrumentation for client brief translation, automated QBRs, and structural process optimization.</p>
-          <button className="hero-btn" onClick={() => scrollTo(toolsRef)}>Launch AI Tools →</button>
+          <div className="hero-buttons">
+            <button className="hero-btn primary" onClick={() => scrollTo(toolsRef)}>Launch AI Tools →</button>
+            <button className="hero-btn secondary" onClick={() => scrollTo(dashboardRef)}>View Dashboard</button>
+          </div>
         </div>
         <div className="hero-grid"></div>
         <ParticlesBg />
@@ -158,14 +170,17 @@ function App() {
           <h2>How to Use AMAT AI</h2>
           <div className="help-grid">
             <div className="help-card glass-card">
+              <div className="help-icon">📋</div>
               <h3>01. Client Brief Translator</h3>
               <p>Paste any unstructured client email or note. AI will extract key requirements, risks, and action items into a structured brief.</p>
             </div>
             <div className="help-card glass-card">
+              <div className="help-icon">📊</div>
               <h3>02. QBR Generator</h3>
               <p>Enter your account performance data. AI generates a complete Quarterly Business Review with insights and recommendations.</p>
             </div>
             <div className="help-card glass-card">
+              <div className="help-icon">⚡</div>
               <h3>03. Process Optimizer</h3>
               <p>Describe your current workflow. AI identifies bottlenecks and provides step-by-step optimization recommendations.</p>
             </div>

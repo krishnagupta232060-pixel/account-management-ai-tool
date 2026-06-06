@@ -58,8 +58,10 @@ function AITools() {
   return (
     <div className="ai-tools-grid">
 
-      <div className="tool-card reveal">
+      <div className="tool-card reveal" data-accent="indigo">
+        <div className="tool-accent-bar"></div>
         <div className="tool-card-header">
+          <span className="tool-icon">📋</span>
           <span className="tool-tag">MODULE 01</span>
           <h3>Client Brief Translator</h3>
           <p className="tool-desc">Paste unstructured client emails or notes. AI extracts key requirements, risks, and action items into a structured brief.</p>
@@ -72,14 +74,16 @@ function AITools() {
             onChange={(e) => setBriefInput(e.target.value)}
           />
           <button className="tool-btn" onClick={handleBrief} disabled={briefLoading}>
-            {briefLoading ? 'Translating...' : 'Translate Brief →'}
+            {briefLoading ? <><span className="btn-spinner"></span> Translating...</> : 'Translate Brief →'}
           </button>
           {briefResult && <div className="tool-result">{briefResult}</div>}
         </div>
       </div>
 
-      <div className="tool-card reveal">
+      <div className="tool-card reveal" data-accent="violet">
+        <div className="tool-accent-bar"></div>
         <div className="tool-card-header">
+          <span className="tool-icon">📊</span>
           <span className="tool-tag">MODULE 02</span>
           <h3>QBR Generator</h3>
           <p className="tool-desc">Enter account performance data and goals. AI generates a complete Quarterly Business Review with insights and next steps.</p>
@@ -92,14 +96,16 @@ function AITools() {
             onChange={(e) => setQbrInput(e.target.value)}
           />
           <button className="tool-btn" onClick={handleQBR} disabled={qbrLoading}>
-            {qbrLoading ? 'Generating...' : 'Generate QBR →'}
+            {qbrLoading ? <><span className="btn-spinner"></span> Generating...</> : 'Generate QBR →'}
           </button>
           {qbrResult && <div className="tool-result">{qbrResult}</div>}
         </div>
       </div>
 
-      <div className="tool-card reveal">
+      <div className="tool-card reveal" data-accent="cyan">
+        <div className="tool-accent-bar"></div>
         <div className="tool-card-header">
+          <span className="tool-icon">⚡</span>
           <span className="tool-tag">MODULE 03</span>
           <h3>Process Optimizer</h3>
           <p className="tool-desc">Describe your current business process or workflow. AI identifies bottlenecks and provides step-by-step optimization recommendations.</p>
@@ -112,7 +118,7 @@ function AITools() {
             onChange={(e) => setProcessInput(e.target.value)}
           />
           <button className="tool-btn" onClick={handleProcess} disabled={processLoading}>
-            {processLoading ? 'Optimizing...' : 'Optimize Process →'}
+            {processLoading ? <><span className="btn-spinner"></span> Optimizing...</> : 'Optimize Process →'}
           </button>
           {processResult && <div className="tool-result">{processResult}</div>}
         </div>

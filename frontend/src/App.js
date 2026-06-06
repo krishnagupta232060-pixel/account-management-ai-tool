@@ -5,6 +5,7 @@ import './App.css';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import AITools from './components/AITools';
+import AIChat from './components/AIChat';
 import ChatBox from './components/ChatBox';
 import ParticlesBg from './components/ParticlesBg';
 import Settings from './components/Settings';
@@ -21,6 +22,7 @@ function App() {
   const homeRef = useRef(null);
   const dashboardRef = useRef(null);
   const toolsRef = useRef(null);
+  const chatRef = useRef(null);
   const aboutRef = useRef(null);
   const helpRef = useRef(null);
   const contactRef = useRef(null);
@@ -88,6 +90,7 @@ function App() {
           <button onClick={() => scrollTo(homeRef)}>Home</button>
           <button onClick={() => scrollTo(dashboardRef)}>Dashboard</button>
           <button onClick={() => scrollTo(toolsRef)}>AI Tools</button>
+          <button className="nav-chat-btn" onClick={() => scrollTo(chatRef)}>💬 AI Chat</button>
           <button onClick={() => scrollTo(aboutRef)}>About</button>
           <button onClick={() => scrollTo(helpRef)}>Help</button>
           <button onClick={() => scrollTo(contactRef)}>Contact</button>
@@ -118,7 +121,7 @@ function App() {
           <h1 className="hero-title">AMAT <span className="gradient-text">AI</span></h1>
           <p className="hero-sub">Enterprise-grade AI instrumentation for client brief translation, automated QBRs, and structural process optimization.</p>
           <div className="hero-buttons">
-            <button className="hero-btn primary" onClick={() => scrollTo(toolsRef)}>Launch AI Tools →</button>
+            <button className="hero-btn primary" onClick={() => scrollTo(chatRef)}>Chat with AI →</button>
             <button className="hero-btn secondary" onClick={() => scrollTo(dashboardRef)}>View Dashboard</button>
           </div>
         </div>
@@ -140,6 +143,16 @@ function App() {
           <h2>Cognitive Tools</h2>
         </div>
         <AITools user={user} />
+      </section>
+
+      <section ref={chatRef} className="aichat-section">
+        <div className="section-header reveal">
+          <p className="section-tag">AI ASSISTANT</p>
+          <h2>Chat with AMAT AI</h2>
+        </div>
+        <div className="aichat-container reveal">
+          <AIChat user={user} />
+        </div>
       </section>
 
       <section ref={aboutRef} className="section">

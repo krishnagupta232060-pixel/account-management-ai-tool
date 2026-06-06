@@ -13,7 +13,7 @@ function ChatBox({ user }) {
   const [loading, setLoading] = useState(false);
   const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
-  const [aiModel, setAiModel] = useState('claude');
+  const [aiModel, setAiModel] = useState('llama');
   const messagesEndRef = useRef(null);
 
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
@@ -61,10 +61,11 @@ function ChatBox({ user }) {
     setLoading(true);
 
     try {
-      const res = await axios.post(`${API}/api/ai/analyze`, {
-        data: input
+      const res = await axios.post(`${API}/api/ai/chat`, {
+        message: input,
+        model: aiModel
       });
-      const aiMsg = { role: 'assistant', content: res.data.analysis };
+      const aiMsg = { role: 'assistant', content: res.data.response };
       setMessages(prev => [...prev, aiMsg]);
 
       if (user) {
@@ -77,7 +78,8 @@ function ChatBox({ user }) {
         loadChatHistory();
       }
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Error getting response. Please try again.' }]);
+      const errorMsg = err.response?.data?.error || 'Error getting response. Please try again.';
+      setMessages(prev => [...prev, { role: 'assistant', content: errorMsg }]);
     }
     setLoading(false);
   };
@@ -140,13 +142,13 @@ function ChatBox({ user }) {
               <span className="chat-title">AMAT AI Assistant</span>
               <div className="model-switcher">
                 <button
-                  className={aiModel === 'claude' ? 'active' : ''}
-                  onClick={() => setAiModel('claude')}
-                >Claude</button>
+                  className={aiModel === 'llama' ? 'active' : ''}
+                  onClick={() => setAiModel('llama')}
+                >Llama 70B</button>
                 <button
-                  className={aiModel === 'gemini' ? 'active' : ''}
-                  onClick={() => setAiModel('gemini')}
-                >Gemini</button>
+                  className={aiModel === 'mixtral' ? 'active' : ''}
+                  onClick={() => setAiModel('mixtral')}
+                >Mixtral</button>
               </div>
             </div>
 

@@ -28,10 +28,17 @@ function App() {
   const contactRef = useRef(null);
 
   useEffect(() => {
+    // Prevent browser from restoring previous scroll position
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
     window.scrollTo(0, 0);
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
+      // Scroll to top again after auth state resolves
+      setTimeout(() => window.scrollTo(0, 0), 100);
     });
     return unsubscribe;
   }, []);

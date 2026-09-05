@@ -13,8 +13,8 @@ if HF_API_TOKEN:
 
 # Model configurations — Hugging Face hosted models (free inference)
 MODELS = {
-    "llama": "mistralai/Mistral-7B-Instruct-v0.3",
-    "mixtral": "microsoft/Phi-3-mini-4k-instruct",
+    "llama": "Qwen/Qwen2.5-7B-Instruct",
+    "mixtral": "HuggingFaceH4/zephyr-7b-beta",
 }
 
 DEFAULT_MODEL = "llama"

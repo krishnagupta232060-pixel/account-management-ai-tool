@@ -162,11 +162,11 @@ function AIChat({ user }) {
             <button
               className={aiModel === 'llama' ? 'active' : ''}
               onClick={() => setAiModel('llama')}
-            >⚡ Mistral 7B</button>
+            >⚡ Qwen 7B</button>
             <button
               className={aiModel === 'mixtral' ? 'active' : ''}
               onClick={() => setAiModel('mixtral')}
-            >🧠 Phi-3</button>
+            >🧠 Zephyr 7B</button>
           </div>
         </div>
 

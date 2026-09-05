@@ -162,11 +162,11 @@ function AIChat({ user }) {
             <button
               className={aiModel === 'llama' ? 'active' : ''}
               onClick={() => setAiModel('llama')}
-            >⚡ Llama 70B</button>
+            >⚡ Gemini Flash</button>
             <button
               className={aiModel === 'mixtral' ? 'active' : ''}
               onClick={() => setAiModel('mixtral')}
-            >🧠 Mixtral</button>
+            >🧠 Gemini 1.5</button>
           </div>
         </div>
 
@@ -249,7 +249,7 @@ function AIChat({ user }) {
               </button>
             </div>
           </div>
-          <p className="aichat-disclaimer">AMAT AI powered by Llama 3.3 70B via Groq. Responses may not always be accurate.</p>
+          <p className="aichat-disclaimer">AMAT AI powered by Google Gemini. Responses may not always be accurate.</p>
         </div>
       </div>
     </div>

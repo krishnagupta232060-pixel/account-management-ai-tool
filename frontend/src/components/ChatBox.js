@@ -146,11 +146,11 @@ function ChatBox({ user }) {
                 <button
                   className={aiModel === 'llama' ? 'active' : ''}
                   onClick={() => setAiModel('llama')}
-                >Gemini Flash</button>
+                >Mistral 7B</button>
                 <button
                   className={aiModel === 'mixtral' ? 'active' : ''}
                   onClick={() => setAiModel('mixtral')}
-                >Gemini 1.5</button>
+                >Phi-3</button>
               </div>
             </div>
 

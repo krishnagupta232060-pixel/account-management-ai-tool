@@ -162,11 +162,11 @@ function AIChat({ user }) {
             <button
               className={aiModel === 'llama' ? 'active' : ''}
               onClick={() => setAiModel('llama')}
-            >⚡ Gemini Flash</button>
+            >⚡ Mistral 7B</button>
             <button
               className={aiModel === 'mixtral' ? 'active' : ''}
               onClick={() => setAiModel('mixtral')}
-            >🧠 Gemini 1.5</button>
+            >🧠 Phi-3</button>
           </div>
         </div>
 
@@ -249,7 +249,7 @@ function AIChat({ user }) {
               </button>
             </div>
           </div>
-          <p className="aichat-disclaimer">AMAT AI powered by Google Gemini. Responses may not always be accurate.</p>
+          <p className="aichat-disclaimer">AMAT AI powered by Hugging Face Inference API. Responses may not always be accurate.</p>
         </div>
       </div>
     </div>

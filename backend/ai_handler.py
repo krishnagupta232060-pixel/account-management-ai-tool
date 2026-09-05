@@ -1,21 +1,20 @@
 import os
 from dotenv import load_dotenv
-from google import genai
+from huggingface_hub import InferenceClient
 
 load_dotenv()
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+HF_API_TOKEN = os.getenv("HF_API_TOKEN")
 
-# Initialize Gemini client
-gemini_client = None
-if GEMINI_API_KEY:
-    gemini_client = genai.Client(api_key=GEMINI_API_KEY)
+# Initialize Hugging Face Inference client
+hf_client = None
+if HF_API_TOKEN:
+    hf_client = InferenceClient(api_key=HF_API_TOKEN)
 
-# Model configurations — Google Gemini models
+# Model configurations — Hugging Face hosted models (free inference)
 MODELS = {
-    "llama": "gemini-2.0-flash",       # mapped from old "llama" key for frontend compatibility
-    "mixtral": "gemini-1.5-flash",     # mapped from old "mixtral" key for frontend compatibility
-    "gemma": "gemini-2.0-flash",       # fallback
+    "llama": "mistralai/Mistral-7B-Instruct-v0.3",
+    "mixtral": "microsoft/Phi-3-mini-4k-instruct",
 }
 
 DEFAULT_MODEL = "llama"
@@ -24,25 +23,31 @@ SYSTEM_PROMPT = "You are AMAT AI, an enterprise account management intelligence 
 
 
 def call_ai(prompt, model_name=None):
-    """Call Google Gemini API for AI inference."""
-    if not gemini_client:
-        return "Error: GEMINI_API_KEY is not set. Please configure your API key."
+    """Call Hugging Face Inference API for AI inference."""
+    if not hf_client:
+        return "Error: HF_API_TOKEN is not set. Please configure your Hugging Face API token."
 
     model_id = MODELS.get(model_name or DEFAULT_MODEL, MODELS[DEFAULT_MODEL])
 
     try:
-        response = gemini_client.models.generate_content(
+        response = hf_client.chat.completions.create(
             model=model_id,
-            contents=prompt,
-            config=genai.types.GenerateContentConfig(
-                system_instruction=SYSTEM_PROMPT,
-                temperature=0.7,
-                max_output_tokens=2048,
-            ),
+            messages=[
+                {
+                    "role": "system",
+                    "content": SYSTEM_PROMPT,
+                },
+                {
+                    "role": "user",
+                    "content": prompt,
+                },
+            ],
+            temperature=0.7,
+            max_tokens=2048,
         )
 
-        if response and response.text:
-            return response.text
+        if response and response.choices:
+            return response.choices[0].message.content
         else:
             return "No response generated. Please try rephrasing your query."
 
@@ -50,8 +55,8 @@ def call_ai(prompt, model_name=None):
         error_msg = str(e)
         if "rate" in error_msg.lower() or "429" in error_msg:
             return "Rate limit reached. Please wait a moment and try again."
-        elif "invalid" in error_msg.lower() and "key" in error_msg.lower():
-            return "Invalid API key. Please check your GEMINI_API_KEY configuration."
+        elif "unauthorized" in error_msg.lower() or "401" in error_msg:
+            return "Invalid API token. Please check your HF_API_TOKEN configuration."
         else:
             return f"AI Error: {error_msg}"
 

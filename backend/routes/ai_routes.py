@@ -32,9 +32,9 @@ def chat():
 @ai_bp.route('/health', methods=['GET'])
 def health():
     """Health check endpoint to verify AI service is running."""
-    from ai_handler import GEMINI_API_KEY
+    from ai_handler import HF_API_TOKEN
     return jsonify({
         "status": "ok",
-        "api_key_configured": bool(GEMINI_API_KEY),
-        "provider": "gemini",
+        "api_key_configured": bool(HF_API_TOKEN),
+        "provider": "huggingface",
     })
